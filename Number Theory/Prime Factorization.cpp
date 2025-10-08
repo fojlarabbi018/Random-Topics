@@ -8,7 +8,9 @@ void solve() {
     vector<int> v;
     int i = 2;
     while(n > 1) {
-        if(n % i == 0) {
+        if(n % i == 0) { 
+            // n will never be divided by 4 or 6 or 9.....
+            // Because 2 will come before 4, 8, .... and 3 before 9, ...
             v.push_back(i); // i is guaranteed to be prime
             n = n / i; // Quotient
             i = 2;
