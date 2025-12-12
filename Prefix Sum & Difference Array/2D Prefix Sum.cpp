@@ -5,6 +5,7 @@ using namespace std;
 const int N = 1000;
 int arr[N][N]; 
 ll pre[N][N];
+
 void solve() {
     // vector<vector<ll>> pre(n + 1, vector<ll> (m + 1, 0));
     int n, m; cin >> n >> m;
@@ -38,6 +39,7 @@ void solve() {
     } */
    
 }
+
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
