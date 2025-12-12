@@ -10,6 +10,7 @@ ll pre[N][N];
 ll diff[N][N]; 
 // In 2D, "diff" matrix of all 0s are taken (also valid for normal array)
 // then after all the operations, just add the main matrix value to the "pre"
+
 void solve() {
     int n, m, q; cin >> n >> m >> q;
     for(int i = 1; i <= n; i++) {
@@ -42,6 +43,7 @@ void solve() {
     }
    
 }
+
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
