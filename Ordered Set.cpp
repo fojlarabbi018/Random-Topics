@@ -11,6 +11,9 @@ ll INF = 1e18;
 
 // Total number of inversion counting using "ordered set" (making it multiset)
 // See the TRICK used here by using INF rather than -1 or -INF
+
+// But the simplest way is to fix the ai and count how many aj follow the condition
+// (just iterate from n to 1)
 void solve() {
     int n;
     cin >> n;
