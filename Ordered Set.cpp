@@ -10,6 +10,7 @@ template <typename T> using o_set = tree<T, null_type, less<T>, rb_tree_tag, tre
 ll INF = 1e18;
 
 // Total number of inversion counting using "ordered set" (making it multiset)
+// See the TRICK used here by using INF rather than -1 or -INF
 void solve() {
     int n;
     cin >> n;
