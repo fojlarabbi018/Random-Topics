@@ -15,6 +15,9 @@ ll seg[4 * N];
 // Actually which range sum it's containing depends on the parent's range
 // That's why it doesn't need to store extra variables l and r
 
+// For each node, we are building its two children first then
+// assigning the sum of children's value
+
 void build(int idx, int l, int r) {
     if(l == r) {
         seg[idx] = a[l];
