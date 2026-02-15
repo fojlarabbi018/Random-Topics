@@ -31,15 +31,13 @@ void build(int idx, int l, int r) {
     seg[idx] = seg[2 * idx] + seg[2 * idx + 1];
 }
 
-int query(int idx, int l, int r, int ql, int qr) {
+ll query(int idx, int l, int r, int ql, int qr) {
     if(l >= ql && r <= qr) return seg[idx];
     else if(r < ql || l > qr) return 0;
     
     int mid = (l + r) / 2;
-    ll left_child = query(2 * idx, l, mid, ql, qr);
-    ll right_child = query(2 * idx + 1, mid + 1, r, ql, qr);
-
-    return left_child + right_child;
+    return query(2 * idx, l, mid, ql, qr) + 
+           query(2 * idx + 1, mid + 1, r, ql, qr);
 }
 
 void update(int idx, int l, int r, int pos, int val) {
