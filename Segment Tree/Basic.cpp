@@ -32,8 +32,8 @@ void build(int idx, int l, int r) {
 }
 
 ll query(int idx, int l, int r, int ql, int qr) {
+    if(r < ql || l > qr) return 0;
     if(l >= ql && r <= qr) return seg[idx];
-    else if(r < ql || l > qr) return 0;
     
     int mid = (l + r) / 2;
     return query(2 * idx, l, mid, ql, qr) + 
