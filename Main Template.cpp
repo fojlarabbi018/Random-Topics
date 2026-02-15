@@ -24,6 +24,72 @@ unordered_map<long long int, int, custom_hash> mp;
 // O(log (min(a, b)))
 
 
+////<======= Ordered Set ========>
+
+#include<bits/stdc++.h>
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+using namespace std;
+
+template <typename T> using o_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+
+void yoyo {
+
+    o_set<int> se;
+    se.insert(4);
+    se.insert(2);
+    se.insert(5);
+    // sorted set se = [2, 4, 5]
+    cout << se.order_of_key(5) << '\n'; // number of elements < 5
+    cout << se.order_of_key(6) << '\n'; // number of elements < 6
+    cout << (*se.find_by_order(1)) << '\n'; // 4
+    // if you imagine this as a 0-indexed vector, what is se[1]?
+}
+
+
+////<======= Segment Tree =======>
+
+const int N = 2e5 + 5;
+ll a[N];
+ll seg[4 * N];
+
+void build(int idx, int l, int r) {
+    if(l == r) {
+        seg[idx] = a[l];
+        return;
+    }
+
+    int mid = (l + r) / 2;
+    build(2 * idx, l, mid);
+    build(2 * idx + 1, mid + 1, r);
+
+    seg[idx] = seg[2 * idx] + seg[2 * idx + 1];
+}
+
+ll query(int idx, int l, int r, int ql, int qr) {
+    if(r < ql || l > qr) return 0;
+    if(l >= ql && r <= qr) return seg[idx];
+
+    int mid = (l + r) / 2;
+    return query(2 * idx, l, mid, ql, qr) +
+           query(2 * idx + 1, mid + 1, r, ql, qr);
+}
+
+void update(int idx, int l, int r, int pos, int val) {
+    if(l == r) {
+        seg[idx] = val;
+        return;
+    }
+
+    int mid = (l + r) / 2;
+    if(pos <= mid) update(2 * idx, l, mid, pos, val);
+    else  update(2 * idx + 1, mid + 1, r, pos, val);
+
+    seg[idx] = seg[2 * idx] + seg[2 * idx + 1];
+}
+
+
 ////<======= gcd =======>
 
 ll mygcd(ll a, ll b) {
