@@ -19,7 +19,7 @@ void update(int idx, int l, int r, int pos, int val) {
     seg[idx] = seg[2 * idx] + seg[2 * idx + 1];
 }
 
-ll query(int idx, int l, int r, int ql, int qr) {
+int query(int idx, int l, int r, int ql, int qr) {
     if(r < ql || l > qr) return 0;
     if(l >= ql && r <= qr) return seg[idx];
 
