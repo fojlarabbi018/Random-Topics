@@ -54,13 +54,6 @@ ll query(int idx, int l, int r, int ql, int qr) {
            query(2 * idx + 1, mid + 1, r, ql, qr);
 }
 
-// We could use a nice idea also... Say you know the index of 
-// pos in the segment tree array, then easily you can visit the path
-// from that index to the root using parent and increase the sum to each
-
-// As all single pos are in the last level of segment tree,
-// we can save them in a map (in the base conditon of the build func)
-
 void solve() {
     int n;
     cin >> n;
