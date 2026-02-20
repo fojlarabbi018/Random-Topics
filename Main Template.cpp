@@ -68,15 +68,6 @@ void build(int idx, int l, int r) {
     seg[idx] = seg[2 * idx] + seg[2 * idx + 1];
 }
 
-ll query(int idx, int l, int r, int ql, int qr) {
-    if(r < ql || l > qr) return 0;
-    if(l >= ql && r <= qr) return seg[idx];
-
-    int mid = (l + r) / 2;
-    return query(2 * idx, l, mid, ql, qr) +
-           query(2 * idx + 1, mid + 1, r, ql, qr);
-}
-
 void update(int idx, int l, int r, int pos, int val) {
     if(l == r) {
         seg[idx] = val;
@@ -89,6 +80,16 @@ void update(int idx, int l, int r, int pos, int val) {
 
     seg[idx] = seg[2 * idx] + seg[2 * idx + 1];
 }
+
+ll query(int idx, int l, int r, int ql, int qr) {
+    if(r < ql || l > qr) return 0;
+    if(l >= ql && r <= qr) return seg[idx];
+
+    int mid = (l + r) / 2;
+    return query(2 * idx, l, mid, ql, qr) +
+           query(2 * idx + 1, mid + 1, r, ql, qr);
+}
+
 
 
 ////<======= gcd =======>
