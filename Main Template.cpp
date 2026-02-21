@@ -106,14 +106,14 @@ ll mygcd(ll a, ll b) {
 
 ////<======= sieve =======>
 
-const int N = 2e5 + 10;
+const int N = 2e5 + 5;
 vector<int> prime;
-bitset<N + 1> b(0); // Both fast and memory efficient 
+bitset<N + 1> bs(0);
 void sieve() {
-    for(int i = 2; i*i <= N; i++) {
-        if(b[i] != 1) {
-            for(int j = i*i; j <= N; j += i) {
-                b[j] = 1;
+    for(int i = 2; i * i <= N; i++) {
+        if(bs[i] != 1) {
+            for(int j = 2 * i; j <= N; j += i) {
+                bs[j] = 1;
             }
         }
     }
@@ -127,16 +127,16 @@ void sieve() {
 //// <======= spf & prime factorization =======>
 
 // The last if condition is very important (otherwise overwriting will happen)
-const int N = 2e5 + 10;
+const int N = 2e5 + 5;
 vector<int> spf(N + 1);
 
 void pre_spf() {   
     for(int i = 2; i <= N; i++) {
         spf[i] = i;
     }
-    for(int i = 2; i*i <= N; i++) {
+    for(int i = 2; i * i <= N; i++) {
         if(spf[i] == i) {
-            for(int j = i*i; j <= N; j += i) {
+            for(int j = 2 * i; j <= N; j += i) {
                 if(spf[j] == j) spf[j] = i;
             }
         }
