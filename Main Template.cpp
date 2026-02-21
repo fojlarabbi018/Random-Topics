@@ -108,17 +108,20 @@ ll mygcd(ll a, ll b) {
 
 const int N = 2e5 + 5;
 vector<int> prime;
-bitset<N + 1> bs(0);
+bitset<N + 1> is_prime;
+
 void sieve() {
+    is_prime.set();
+    is_prime[1] = 0;
     for(int i = 2; i * i <= N; i++) {
-        if(bs[i] != 1) {
+        if(is_prime[i]) {
             for(int j = 2 * i; j <= N; j += i) {
-                bs[j] = 1;
+                is_prime[j] = 0;
             }
         }
     }
     for(int i = 2; i <= N; i++) {
-        if(b[i] != 1) prime.push_back(i);
+        if(is_prime[i]) prime.push_back(i);
     }
 
 }
