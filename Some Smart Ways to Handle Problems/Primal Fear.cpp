@@ -1,3 +1,4 @@
+// https://vjudge.net/problem/spoj-vectar8
 // Time limit is 300 ms, that's why it needs to handle in a diff way
 
 // Got TLE (see below)
