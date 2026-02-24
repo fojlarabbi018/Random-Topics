@@ -23,9 +23,9 @@ void solve() {
         int cur = q.front();
         q.pop();
         cout << cur << " ";
-        for(auto next: adj[cur]) {
-            indegree[next]--;
-            if(indegree[next] == 0) q.push(next);
+        for(auto neighbor: adj[cur]) {
+            indegree[neighbor]--;
+            if(indegree[neighbor] == 0) q.push(neighbor);
         }
     }
 }
