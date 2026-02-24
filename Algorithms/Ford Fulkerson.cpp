@@ -19,13 +19,13 @@ int bfs(int s, int t) {
         int flow = q.front().second;
         q.pop();
 
-        for(auto next : adj[cur]) {
-            if(parent[next] == -1 && capacity[cur][next] > 0) {
-                parent[next] = cur;
-                int new_flow = min(flow, capacity[cur][next]);
+        for(auto neighbor : adj[cur]) {
+            if(parent[neighbor] == -1 && capacity[cur][neighbor] > 0) {
+                parent[neighbor] = cur;
+                int new_flow = min(flow, capacity[cur][neighbor]);
 
-                if(next == t) return new_flow;
-                else q.push({next, new_flow});
+                if(neighbor == t) return new_flow;
+                else q.push({neighbor, new_flow});
             }
         }
     }
