@@ -7,7 +7,7 @@ vector<int> parent(N);
 vector<int> adj[N];
 int capacity[N][N];
 
-int dfs(int s, int t) {
+int bfs(int s, int t) {
     fill(parent.begin(), parent.end(), -1);
     parent[s] = -2;
 
@@ -36,7 +36,7 @@ int max_flow(int s, int t) {
     int flow = 0;
     int new_flow;
 
-    while(new_flow = dfs(s, t)) {
+    while(new_flow = bfs(s, t)) {
         flow += new_flow;
         int cur = t;
 
