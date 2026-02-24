@@ -25,7 +25,7 @@ int bfs(int s, int t) {
                 int new_flow = min(flow, capacity[cur][next]);
 
                 if(next == t) return new_flow;
-                q.push({next, new_flow});
+                else q.push({next, new_flow});
             }
         }
     }
