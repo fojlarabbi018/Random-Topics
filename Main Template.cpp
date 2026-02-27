@@ -123,7 +123,6 @@ void sieve() {
     for(int i = 2; i <= N; i++) {
         if(is_prime[i]) prime.push_back(i);
     }
-
 }
 
 
@@ -147,17 +146,30 @@ void pre_spf() {
 
 }
 
+vector<int> v;
 void prime_fact(int n) {
-    vector<int> v;
     while(n > 1) { // Approximately less than O(log n)
         v.push_back(spf[n]);
         n /= spf[n];
-    }
-    for(auto x: v) cout << x << " ";
-    cout << '\n';
-    
+    } 
 }
 
+
+//// <========= Normal Prime Factorization ========>
+
+vector<int> v;
+void prime_fact(int n) {
+    for(int i = 2; i * i <= n; i++) { 
+        if(n % i == 0) {
+            while(n % i == 0) { // Always think n in skeleton view(PF)
+                v.push_back(i);
+                n /= i;
+            }
+        }
+    }
+
+    if(n > 1) v.push_back(n); // When n itself becomes a prime
+}
 
 ////<======= Binary Exponentiation =======>
 
