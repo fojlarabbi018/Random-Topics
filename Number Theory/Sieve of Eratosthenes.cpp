@@ -10,7 +10,7 @@
 using namespace std;
 #define ll long long
 
-const int N = 2e5 + 5;
+const int N = 1e6 + 5;
 vector<int> prime;
 bitset<N> is_prime;
 
