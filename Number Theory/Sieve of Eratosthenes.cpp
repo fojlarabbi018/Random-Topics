@@ -12,20 +12,20 @@ using namespace std;
 
 const int N = 2e5 + 5;
 vector<int> prime;
-bitset<N + 1> is_prime;
+bitset<N> is_prime;
 
 void sieve() {
     is_prime.set();
     is_prime[1] = 0;
-    for(int i = 2; i * i <= N; i++) {
+    for(int i = 2; i * i < N; i++) {
         if(is_prime[i]) {
-            for(int j = 2 * i; j <= N; j += i) {
+            for(int j = 2 * i; j < N; j += i) {
                 is_prime[j] = 0;
             }
         }
     }
   
-    for(int i = 2; i <= N; i++) {
+    for(int i = 2; i < N; i++) {
         if(is_prime[i]) prime.push_back(i);
     }
 }
