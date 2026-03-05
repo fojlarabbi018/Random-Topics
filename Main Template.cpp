@@ -106,21 +106,22 @@ ll mygcd(ll a, ll b) {
 
 ////<======= sieve =======>
 
-const int N = 2e5 + 5;
+const int N = 1e6 + 5;
 vector<int> prime;
-bitset<N + 1> is_prime;
+bitset<N> is_prime;
 
 void sieve() {
     is_prime.set();
     is_prime[1] = 0;
-    for(int i = 2; i * i <= N; i++) {
+    for(int i = 2; i * i < N; i++) {
         if(is_prime[i]) {
-            for(int j = 2 * i; j <= N; j += i) {
+            for(int j = 2 * i; j < N; j += i) {
                 is_prime[j] = 0;
             }
         }
     }
-    for(int i = 2; i <= N; i++) {
+
+    for(int i = 2; i < N; i++) {
         if(is_prime[i]) prime.push_back(i);
     }
 }
@@ -128,27 +129,26 @@ void sieve() {
 
 //// <======= spf & prime factorization =======>
 
-// The last if condition is very important (otherwise overwriting will happen)
-const int N = 2e5 + 5;
-vector<int> spf(N + 1);
+const int N = 1e6 + 5;
+vector<int> spf(N);
 
 void pre_spf() {   
-    for(int i = 2; i <= N; i++) {
+    for(int i = 2; i < N; i++) {
         spf[i] = i;
     }
-    for(int i = 2; i * i <= N; i++) {
+
+    for(int i = 2; i * i < N; i++) {
         if(spf[i] == i) {
-            for(int j = 2 * i; j <= N; j += i) {
+            for(int j = 2 * i; j < N; j += i) {
                 if(spf[j] == j) spf[j] = i;
             }
         }
     }
-
 }
 
 vector<int> v;
 void prime_fact(int n) {
-    while(n > 1) { // Approximately less than O(log n)
+    while(n > 1) {
         v.push_back(spf[n]);
         n /= spf[n];
     } 
@@ -161,7 +161,7 @@ vector<int> v;
 void prime_fact(int n) {
     for(int i = 2; i * i <= n; i++) { 
         if(n % i == 0) {
-            while(n % i == 0) { // Always think n in skeleton view(PF)
+            while(n % i == 0) {
                 v.push_back(i);
                 n /= i;
             }
