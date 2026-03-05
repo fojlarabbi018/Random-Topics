@@ -2,7 +2,7 @@
 using namespace std;
 #define ll long long
 
-const int N = 2e5 + 10;
+const int N = 2e5 + 5;
 vector<int> spf(N);
 
 void pre_spf() {   
