@@ -103,7 +103,17 @@ ll mygcd(ll a, ll b) {
     return a;
 } 
 
+////<======= legendare ========>
 
+int legendare(int n, int p) {
+    int ans = 0;
+    while(n / 2 > 0) {
+        ans += n / 2;
+        n /= 2;
+    }
+
+    return ans;
+}
 ////<======= sieve =======>
 
 const int N = 1e6 + 5;
@@ -168,13 +178,13 @@ void prime_fact(int n) {
         }
     }
 
-    if(n > 1) v.push_back(n); // When n itself becomes a prime
+    if(n > 1) v.push_back(n);
 }
 
 ////<======= Binary Exponentiation =======>
 
 const int N = 1e6 + 5, m = 1e9 + 7;
-int binpow(ll a, ll n, int m) { // O(log n)
+int binpow(ll a, ll n, int m) {
     a = a % m;   
     ll res = 1 % m;
     while(n > 0) {
@@ -185,7 +195,6 @@ int binpow(ll a, ll n, int m) { // O(log n)
         n >>= 1;
     }
     return res;
-  
 }
 
 
@@ -222,30 +231,33 @@ int nPr(int n, int r) {
     return 1LL * fact[n] * invfact[n - r] % m;
 }
 
+//// When N is small
+
 const int N = 2005, m = 1e9 + 7;
 
 int C[N][N], fact[N];
 void prec() { // O(n^2)
-  for (int i = 0; i < N; i++) {
-    C[i][0] = C[i][i] = 1;
-    for (int j = 1; j < i; j++) {
-      C[i][j] = (C[i - 1][j - 1] + C[i - 1][j]) % m;
+    for(int i = 0; i < N; i++) {
+        C[i][0] = C[i][i] = 1;
+        for(int j = 1; j < i; j++) {
+            C[i][j] = (C[i - 1][j - 1] + C[i - 1][j]) % m;
+        }
     }
-  }
-  fact[0] = 1;
-  for (int i = 1; i < N; i++) {
-    fact[i] = 1LL * fact[i - 1] * i % m;
-  }
+
+    fact[0] = 1;
+    for(int i = 1; i < N; i++) {
+        fact[i] = 1LL * fact[i - 1] * i % m;
+    }
 }
 
 int nCr(int n, int r) { // O(1)
-  if (n < r || n < 0 || r < 0) return 0;
-  return C[n][r];
+    if (n < r || n < 0 || r < 0) return 0;
+    return C[n][r];
 }
 
 int nPr(int n, int r) { // O(1)
-  if (n < r || n < 0 || r < 0) return 0;
-  return 1LL * nCr(n, r) * fact[r] % m;
+    if (n < r || n < 0 || r < 0) return 0;
+    return 1LL * nCr(n, r) * fact[r] % m;
 }
 
 int main() {
