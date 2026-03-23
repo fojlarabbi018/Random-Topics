@@ -52,8 +52,113 @@ void yoyo {
 ////<======= Segment Tree =======>
 
 const int N = 2e5 + 5;
+struct Node {
+    int gcd, mn, cnt;
+};
+
 ll a[N];
-ll seg[4 * N];
+Node seg[4 * N];
+
+Node merge(Node left, Node right) {
+    Node res;
+    res.gcd = __gcd(left.gcd, right.gcd);
+    res.mn = min(left.mn, right.mn);
+
+    if(left.mn == right.mn) {
+        res.cnt = left.cnt + right.cnt;
+    }
+    else if(left.mn < right.mn) {
+        res.cnt = left.cnt;
+    }
+    else res.cnt = right.cnt;
+
+    return res;
+}
+
+void build(int idx, int l, int r) {
+    if(l == r) {
+        seg[idx].gcd = a[l];
+        seg[idx].mn = a[l];
+        seg[idx].cnt = 1;
+        return;
+    }
+
+    int mid = (l + r) / 2;
+    build(2 * idx, l, mid);
+    build(2 * idx + 1, mid + 1, r);
+
+    seg[idx] = merge(seg[2 * idx], seg[2 * idx + 1]);
+}
+
+void update(int idx, int l, int r, int pos, int val) {
+    if(l == r) {
+        seg[idx].gcd = val;
+        seg[idx].mn = val;
+        seg[idx].cnt = 1;
+        return;
+    }
+
+    int mid = (l + r) / 2;
+    if(pos <= mid) update(2 * idx, l, mid, pos, val);
+    else  update(2 * idx + 1, mid + 1, r, pos, val);
+
+    seg[idx] = merge(seg[2 * idx], seg[2 * idx + 1]);
+} 
+
+Node query(int idx, int l, int r, int ql, int qr) {
+    if(r < ql || l > qr) return {0, INT_MAX, 0};
+    if(l >= ql && r <= qr) return seg[idx];
+
+    int mid = (l + r) / 2;
+   
+    return merge(query(2 * idx, l, mid, ql, qr),
+           query(2 * idx + 1, mid + 1, r, ql, qr));
+}
+
+void solve() {
+    int n, q;
+    cin >> n >> q;
+    for(int i = 1; i <= n; i++) cin >> a[i];
+
+    build(1, 1, n);
+
+    while(q--) {
+        int type;
+        cin >> type;
+        if(type == 1) {
+            int pos, val;
+            cin >> pos >> val;
+            pos++;
+          
+            update(1, 1, n, pos, val);
+        } 
+        else {
+            int l, r;
+            cin >> l >> r;
+            l++; r++;
+            Node ans = query(1, 1, n, l, r - 1);
+            cout << ans.gcd << " " << ans.mn << " " << ans.cnt << '\n';
+        }
+    }
+}
+
+//// <======= Lazy =======>
+
+const int N = 2e5 + 5;
+ll seg[4 * N], lazy[4 * N];
+ll a[N];
+
+void push(int idx, int l, int r) {
+    if(lazy[idx] == 0) return;
+    seg[idx] += (r - l + 1) * lazy[idx];
+
+    if(l != r) {
+        lazy[2 * idx] += lazy[idx];
+        lazy[2 * idx + 1] += lazy[idx];
+    }
+
+    lazy[idx] = 0;
+}
 
 void build(int idx, int l, int r) {
     if(l == r) {
@@ -68,20 +173,26 @@ void build(int idx, int l, int r) {
     seg[idx] = seg[2 * idx] + seg[2 * idx + 1];
 }
 
-void update(int idx, int l, int r, int pos, int val) {
-    if(l == r) {
-        seg[idx] = val;
+void update(int idx, int l, int r, int ql, int qr, int val) {
+    push(idx, l, r);
+
+    if(r < ql || l > qr) return;
+    if(l >= ql && r <= qr) {
+        lazy[idx] += val;
+        push(idx, l, r);
         return;
     }
-
+    
     int mid = (l + r) / 2;
-    if(pos <= mid) update(2 * idx, l, mid, pos, val);
-    else  update(2 * idx + 1, mid + 1, r, pos, val);
+    update(2 * idx, l, mid, ql, qr, val);
+    update(2 * idx + 1, mid + 1, r, ql, qr, val);
 
     seg[idx] = seg[2 * idx] + seg[2 * idx + 1];
 }
 
 ll query(int idx, int l, int r, int ql, int qr) {
+    push(idx, l, r);
+
     if(r < ql || l > qr) return 0;
     if(l >= ql && r <= qr) return seg[idx];
 
@@ -89,8 +200,6 @@ ll query(int idx, int l, int r, int ql, int qr) {
     return query(2 * idx, l, mid, ql, qr) +
            query(2 * idx + 1, mid + 1, r, ql, qr);
 }
-
-
 
 ////<======= gcd =======>
 
