@@ -3,8 +3,8 @@ using namespace std;
 #define ll long long
 
 const int N = 2e5 + 5;
-int seg[4 * N], lazy[4 * N];
-int a[N];
+ll seg[4 * N], lazy[4 * N];
+ll a[N];
 
 void push(int idx, int l, int r) {
     if(lazy[idx] == 0) return;
@@ -58,7 +58,6 @@ ll query(int idx, int l, int r, int ql, int qr) {
     return query(2 * idx, l, mid, ql, qr) +
            query(2 * idx + 1, mid + 1, r, ql, qr);
 }
-
 
 void solve() {
     int n, q;
