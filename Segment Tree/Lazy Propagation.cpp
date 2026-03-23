@@ -55,8 +55,8 @@ ll query(int idx, int l, int r, int ql, int qr) {
     if(l >= ql && r <= qr) return seg[idx];
 
     int mid = (l + r) / 2;
-    return query(idx * 2, l, mid, ql, qr) +
-           query(idx *2 + 1, mid + 1, r, ql, qr);
+    return query(2 * idx, l, mid, ql, qr) +
+           query(2 * idx + 1, mid + 1, r, ql, qr);
 }
 
 
