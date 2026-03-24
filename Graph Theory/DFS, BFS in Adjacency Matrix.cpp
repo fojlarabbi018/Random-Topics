@@ -24,11 +24,10 @@ void dfs(int u) {
 
 // O(V^2) [All the cells will be checked]
 void bfs(int src) {
-    vis[src] = true;
-    dist[src] = 0;
-
     queue<int> q;
     q.push(src);
+    vis[src] = true;
+    dist[src] = 0;
     
     while(!q.empty()) {
         int u = q.front();
@@ -37,9 +36,9 @@ void bfs(int src) {
         // cout << u << " ";
         for(int v = 1; v < N; v++) {
             if(adj[u][v] == 1 && !vis[v]) {
+                q.push(v);
                 vis[v] = true;
                 dist[v] = dist[u] + 1;
-                q.push(v);
             }
         }
     }
