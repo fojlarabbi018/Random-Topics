@@ -15,9 +15,7 @@ void dfs(int u) {
             col[v] = col[u] ^ 1;
             dfs(v);
         }
-        else {
-            if(col[v] == col[u]) ok = false;
-        }
+        else if(col[v] == col[u]) ok = false;
     }
 }
 
