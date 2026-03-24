@@ -7,6 +7,9 @@ vector<int> adj[N];
 bool vis[N];
 int dist[N];
 
+// O(V + 2E) = O(V + E)
+// For each node, all its adjacent nodes are checked (adjacent edges simply)
+// And finally you can see that each edges are checked twice
 void bfs(int src) {
     queue<int> q;
     q.push(src);
