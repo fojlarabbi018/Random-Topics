@@ -1,3 +1,7 @@
+// This is just normal DFS, BFS in a Matrix for a "graph"
+// The "Maze" type problem are completely different, only adajecent cells matter there
+// and BFS, DFS are applied on the basis of "adjacent cells"
+
 #include<bits/stdc++.h>
 using namespace std;
 #define ll long long
