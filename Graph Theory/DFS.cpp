@@ -6,6 +6,9 @@ const int N = 1005;
 vector<int> adj[N];
 bool vis[N];
 
+// O(V + 2E) = O(V + E)
+// For each node, all its adjacent nodes are checked (adjacent edges simply)
+// And finally you can see that each edges are checked twice
 void dfs(int u) {
     vis[u] = true;
     for(auto v : adj[u]) {
