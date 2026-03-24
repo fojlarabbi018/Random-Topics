@@ -4,29 +4,25 @@ using namespace std;
 
 const int N = 1005;
 vector<int> adj[N];
-bool vis[N], ok = true;
+bool vis[N];
 int col[N];
+bool ok = true;
 
-void bfs(int src) {
-    queue<int> q;
-    q.push(src);
-    vis[src] = true;
- 
-    while(!q.empty()) {
-        int u = q.front();
-        q.pop();
-
-        for(auto v : adj[u]) {
-            if(!vis[v]) {
-                q.push(v);
-                vis[v] = true;
-                col[v] = col[u] ^ 1;
-            }
-            else {
-                if(col[u] == col[v]) ok = false;
-            }
+void dfs(int u) {
+    vis[u] = true;
+    for(auto v : adj[u]) {
+        if(!vis[v]) {
+            col[v] = col[u] ^ 1;
+            dfs(v);
+        }
+        else {
+            if(col[v] == col[u]) ok = false;
         }
     }
+}
+
+bool is_bipartite() {
+    return ok;
 }
 
 void solve() {
@@ -40,9 +36,9 @@ void solve() {
     }
     
     for(int i = 1; i <= n; i++) {
-        if(!vis[i]) bfs(i);
+        if(!vis[i]) dfs(i);
     }
-    cout << ok << '\n';
+    cout << is_bipartite() << '\n';
 }
 
 int main() {
