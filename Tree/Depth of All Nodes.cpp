@@ -7,9 +7,9 @@ vector<int> adj[N];
 int depth[N];
 
 void dfs(int u, int p) {
+    depth[u] = depth[p] + 1;
     for(auto v : adj[u]) {
         if(v != p) {
-            depth[v] = depth[u] + 1;
             dfs(v, u);
         }
     }
@@ -25,7 +25,7 @@ void solve() {
         adj[v].push_back(u);
     }
     
-    dfs(1, -1);
+    dfs(1, 0);
     for(int i = 1; i <= n; i++) {
         cout << depth[i] << " ";
     }
