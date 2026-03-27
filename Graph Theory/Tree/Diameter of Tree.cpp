@@ -8,9 +8,9 @@ int depth[N];
 
 // 👉 Diameter = longest distance between any two nodes
 void dfs(int u, int p) {
-    depth[u] = depth[p] + 1;
     for(auto v : adj[u]) {
         if(v != p) {
+        depth[v] = depth[u] + 1;
             dfs(v, u);
         }
     }
@@ -29,7 +29,7 @@ void solve() {
     // 1st DFS
     // When a dfs is applied from any node, then the farthest node
     // will always be an endpoint of the diameter
-    dfs(1, 0);
+    dfs(1, -1);
     int node = 1, mx = INT_MIN;
     for(int i = 1; i <= n; i++) {
         if(depth[i] > mx) {
@@ -40,7 +40,7 @@ void solve() {
     
     // 2nd DFS
     memset(depth, 0, sizeof(depth));
-    dfs(node, 0);
+    dfs(node, -1);
 
     mx = INT_MIN;
     for(int i = 1; i <= n; i++) {
