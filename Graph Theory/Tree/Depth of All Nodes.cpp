@@ -9,7 +9,7 @@ int depth[N];
 void dfs(int u, int p) {
     for(auto v : adj[u]) {
         if(v != p) {
-        depth[v] = depth[u] + 1;
+            depth[v] = depth[u] + 1;
             dfs(v, u);
         }
     }
