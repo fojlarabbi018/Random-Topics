@@ -274,7 +274,7 @@ void prime_fact(int n) {
 }
 
 
-//// <========= Normal Prime Factorization ========>
+//// <======== Normal Prime Factorization ========>
 
 vector<int> v;
 void prime_fact(int n) {
