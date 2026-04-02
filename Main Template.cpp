@@ -274,7 +274,7 @@ void prime_fact(int n) {
 }
 
 
-//// <======== Normal Prime Factorization ========>
+//// <========= Normal Prime Factorization ========>
 
 vector<int> v;
 void prime_fact(int n) {
@@ -373,7 +373,10 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    pre_fact();
-    cout << nCr(5, 3);
+    int t;
+    cin >> t;
+    while(t--) {
+        solve();
+    }
     return 0;
 }
