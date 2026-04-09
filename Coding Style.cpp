@@ -2,55 +2,72 @@
 using namespace std;
 #define ll long long
 
+const int N = 2e5 + 5;
+vector<int> adj[N];
+vector<pair<int, int>> edges;
+
+void dfs(int u, int p, string s) {
+    for(auto v : adj[u]) {
+        if(v != p) {
+            if(s == "out") {
+                edges.push_back({u, v});
+                dfs(v, u, "in");
+            }
+            else {
+                edges.push_back({v, u});
+                dfs(v, u, "out");
+            }
+        }
+    }
+}
+
 void solve() {
     int n;
     cin >> n;
 
-    vector<int> a(n), b(n), c(n);
-    for(int i = 0; i < n; i++) cin >> a[i];
-    for(int i = 0; i < n; i++) cin >> b[i];
-    for(int i = 0; i < n; i++) cin >> c[i];
-
-    priority_queue<pair<int, int>> ap, bp, cp;
-    for(int i = 0; i < n; i++) {
-        ap.push({a[i], i});
-        bp.push({b[i], i});
-        cp.push({c[i], i});
+    for(int i = 0; i <= n; i++) {
+        adj[i].clear();
     }
-    
-    vector<int> max3a, max3b, max3c;
-    int cnt = 3;
-    while(cnt--) {
-        max3a.push_back((ap.top()).second);
-        max3b.push_back((bp.top()).second);
-        max3c.push_back((cp.top()).second);
-        ap.pop();
-        bp.pop();
-        cp.pop();
-    }
-    int ans = 0;
-    for(int i = 0; i < 3; i++) {
-        for(int j = 0; j < 3; j++) {
-            for(int k = 0; k < 3; k++) {
-                int x = max3a[i];
-                int y = max3b[j];
-                int z = max3c[k];
-                if(x != y && y != z && z != x) {
-                    int sum = a[x] + b[y] + c[z];
-                    ans = max(ans, sum);
-                }
+    edges.clear();
 
-            }
+    for(int i = 1; i < n; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    int root = -1;
+    for(int i = 1; i <= n; i++) {
+        int sz = adj[i].size();
+        if(sz == 2) {
+            root = i;
+            break;
         }
     }
-    cout << ans << '\n';
+
+    if(n == 2 || root == -1) {
+        cout << "NO\n";
+        return;
+    }
+
+    edges.push_back({adj[root][0], root});
+    edges.push_back({root, adj[root][1]});
+
+    dfs(adj[root][0], root, "out");
+    dfs(adj[root][1], root, "in");
+
+    cout << "YES\n";
+    for(auto [x, y] : edges) {
+        cout << x << " " << y << '\n';
+    }
 }
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    int t; 
+    int t;
     cin >> t;
     while(t--) {
         solve();
