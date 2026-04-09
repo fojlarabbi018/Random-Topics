@@ -16,7 +16,6 @@ void solve() {
 
     clock_t en = clock();
     cout << (double)(en - st) / CLOCKS_PER_SEC << "s\n";
-
 }
 
 int main() {
