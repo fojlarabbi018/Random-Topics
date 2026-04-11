@@ -66,7 +66,7 @@ void solve() {
             int nj = j + dc[d];
             
             int ti = ni, tj = nj;
-            if(is_valid(ni, nj)) {
+            if(is_valid(ni, nj) && !escape[ni][nj]) {
                 if(grid[ni][nj] == 'U') ti--;
                 else if(grid[ni][nj] == 'D') ti++;
                 else if(grid[ni][nj] == 'L') tj--;
