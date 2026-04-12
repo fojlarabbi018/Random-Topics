@@ -36,9 +36,9 @@ void bfs(int src) {
         // cout << u << " ";
         for(int v = 1; v < N; v++) {
             if(adj[u][v] == 1 && !vis[v]) {
-                q.push(v);
                 vis[v] = true;
                 dist[v] = dist[u] + 1;
+                q.push(v);
             }
         }
     }
