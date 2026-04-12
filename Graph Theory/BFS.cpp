@@ -2,7 +2,7 @@
 using namespace std;
 #define ll long long
 
-const int N = 1005;
+const int N = 2e5 + 5;
 vector<int> adj[N];
 bool vis[N];
 int dist[N];
@@ -22,9 +22,9 @@ void bfs(int src) {
 
         for(auto v : adj[u]) {
             if(!vis[v]) {
-                q.push(v);
                 vis[v] = true;
                 dist[v] = dist[u] + 1;
+                q.push(v);
             }
         }
     }
