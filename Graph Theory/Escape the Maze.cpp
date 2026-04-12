@@ -1,6 +1,9 @@
 // Say you have been given a maze/grid where each cell has a direction(U, D, L, R)
 // How many starting cells are there from where you can escape?
 
+// Note: You cannot take a global N = 1005, then grid[N][N]......
+// because the constaints may change like m x n <= 2e5, in that case n = 2e4, m = 10 is also valid
+
 #include<bits/stdc++.h>
 using namespace std;
 #define ll long long
