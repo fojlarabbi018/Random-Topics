@@ -47,7 +47,7 @@ void solve() {
             int ni = i + dr[d];
             int nj = j + dc[d];
 
-            if(is_valid(ni, nj) && !vis[ni][nj] && grid[ni][nj] != '#') {
+            if(is_valid(ni, nj) && grid[ni][nj] != '#' && !vis[ni][nj]) {
                 vis[ni][nj] = true;
                 dist[ni][nj] = dist[i][j] + 1;
                 q.push({ni, nj});
