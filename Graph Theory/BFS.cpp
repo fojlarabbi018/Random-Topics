@@ -22,6 +22,7 @@ void bfs(int src) {
 
         for(auto v : adj[u]) {
             if(!vis[v]) {
+                // perfect order
                 vis[v] = true;
                 dist[v] = dist[u] + 1;
                 q.push(v);
