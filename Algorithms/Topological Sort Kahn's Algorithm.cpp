@@ -20,12 +20,12 @@ void solve() {
     }
 
     while(!q.empty()) {
-        int cur = q.front();
+        int u = q.front();
         q.pop();
-        cout << cur << " ";
-        for(auto neighbor: adj[cur]) {
-            indegree[neighbor]--;
-            if(indegree[neighbor] == 0) q.push(neighbor);
+        cout << u << " ";
+        for(auto v: adj[u]) {
+            indegree[v]--;
+            if(indegree[v] == 0) q.push(v);
         }
     }
 }
