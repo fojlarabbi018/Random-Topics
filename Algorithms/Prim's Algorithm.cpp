@@ -54,9 +54,8 @@ return 0;
 }
 
 /*
-Time Complexity = O(E log V)
+Time Complexity = O((V + E) log V) = O(E log V)
 Why?
-Each edge is checked and then unvisited nodes are pushed → O(E)
 Each push/pop from heap costs log V 
 because the heap can have max V - 1 elements at a time (only unvisited are pushed)
 So total ≈ E log V
