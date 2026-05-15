@@ -6,7 +6,7 @@ const int N = 1005;
 vector<int> adj[N];
 bool vis[N];
 int col[N];
-bool ok = true;
+bool is_bipartite = true;
 
 void dfs(int u) {
     vis[u] = true;
@@ -15,12 +15,10 @@ void dfs(int u) {
             col[v] = col[u] ^ 1;
             dfs(v);
         }
-        else if(col[v] == col[u]) ok = false;
+        else if(col[v] == col[u]) {
+            is_bipartite = false;
+        }
     }
-}
-
-bool is_bipartite() {
-    return ok;
 }
 
 void solve() {
@@ -36,7 +34,7 @@ void solve() {
     for(int i = 1; i <= n; i++) {
         if(!vis[i]) dfs(i);
     }
-    cout << is_bipartite() << '\n';
+    cout << is_bipartite << '\n';
 }
 
 int main() {
