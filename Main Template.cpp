@@ -216,9 +216,9 @@ ll mygcd(ll a, ll b) {
 
 int legendare(int n, int p) {
     int ans = 0;
-    while(n / 2 > 0) {
-        ans += n / 2;
-        n /= 2;
+    while(n / p > 0) {
+        ans += n / p;
+        n /= p;
     }
 
     return ans;
@@ -367,6 +367,236 @@ int nCr(int n, int r) { // O(1)
 int nPr(int n, int r) { // O(1)
     if (n < r || n < 0 || r < 0) return 0;
     return 1LL * nCr(n, r) * fact[r] % m;
+}
+
+
+/// <======= Binary Trie =======>
+
+struct Node {
+    Node* next[2];
+    
+    Node() {
+        for(int i = 0; i < 2; i++) {
+            next[i] = NULL;
+        }
+    }
+};
+
+class Trie {
+public:
+    Node* root;
+
+    Trie() {
+        root = new Node();
+    }
+
+    void insert(int num) {
+        Node* cur = root;
+        for(int i = 30; i >= 0; i--) {
+            int bit = (num >> i) & 1;
+            if(cur->next[bit] == NULL) {
+                cur->next[bit] = new Node();
+            }
+            cur = cur->next[bit];
+        }
+    }
+
+    int get_max_xor(int num) {
+        Node* cur = root;
+        int ans = 0;
+        for(int i = 30; i >= 0; i--) {
+            int bit = (num >> i) & 1;
+            int want = bit ^ 1;
+
+            if(cur->next[want] != NULL) {
+                ans |= (1 << i);
+                cur = cur->next[want];
+            }
+            else cur = cur->next[bit];
+        }
+        return ans;
+    }
+};
+
+struct DSU {
+    vector<int> parent, sz;
+
+    DSU(int n) {
+        parent.resize(n + 1);
+        sz.resize(n + 1, 1);
+        for(int i = 0; i <= n; i++) {
+            parent[i] = i;
+        }
+    }
+
+    int find(int v) {
+        if(parent[v] == v) {
+            return v;
+        }
+        return parent[v] = find(parent[v]);
+    } 
+
+    void unite(int a, int b) {
+        a = find(a);
+        b = find(b);
+        if(a != b) {
+            if(sz[a] < sz[b]) {
+                swap(a, b);
+            }
+            parent[b] = a;
+            sz[a] += sz[b];
+        }
+    }
+
+    bool same(int a, int b) {
+        return find(a) == find(b);
+    }
+
+    int size(int v) {
+        return sz[find(v)];
+    }
+};
+
+/// <======= Maze =======>
+
+// shortest path
+int n, m;
+vector<pair<int, int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+bool is_valid(int i, int j) {
+    return i >= 0 && i < n && j >= 0 && j < m;
+}
+
+void solve() {
+    cin >> n >> m;
+    char grid[n][m];
+    int si, sj, ti, tj;
+
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < m; j++) {
+            cin >> grid[i][j];
+            if(grid[i][j] == 'S') {
+                si = i;
+                sj = j;
+            }
+            if(grid[i][j] == 'T') {
+                ti = i;
+                tj = j;
+            }
+        }
+    }
+    
+    vector<vector<bool>> vis(n, vector<bool> (m, false));
+    vector<vector<int>> dist(n, vector<int> (m, 0));
+    queue<pair<int, int>> q;
+
+    q.push({si, sj});
+    vis[si][sj] = true;
+    dist[si][sj] = 0;
+
+    while(!q.empty()) {
+        auto [i, j] = q.front();
+        q.pop();
+
+        for(int d = 0; d < 4; d++) {
+            int ni = i + directions[d].first;
+            int nj = j + directions[d].second;
+
+            if(is_valid(ni, nj) && grid[ni][nj] != '#' && !vis[ni][nj]) {
+                vis[ni][nj] = true;
+                dist[ni][nj] = dist[i][j] + 1;
+                q.push({ni, nj});
+            }
+        }
+    }
+
+    cout << dist[ti][tj] << '\n';
+   
+}
+
+// escape the maze
+int n, m;
+int dr[4] = {-1, 1, 0, 0};
+int dc[4] = {0, 0, -1, 1};
+
+bool is_valid(int i, int j) {
+    return i >= 0 && i < n && j >= 0 && j < m;
+}
+
+void solve() {
+    cin >> n >> m;
+    char grid[n][m];
+
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < m; j++) {
+            cin >> grid[i][j];
+        }
+    }
+
+    queue<pair<int, int>> q;
+    vector<vector<bool>> escape(n, vector<bool> (m, false));
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < m; j++) {
+            if(i == 0) {
+                if(grid[i][j] == 'U') {
+                    q.push({i, j});
+                    escape[i][j] = true;
+                }
+            }
+
+            if(i == n - 1) {
+                if(grid[i][j] == 'D') {
+                    q.push({i, j});
+                    escape[i][j] = true;
+                }
+            }
+
+            if(j == 0) {
+                if(grid[i][j] == 'L') {
+                    q.push({i, j});
+                    escape[i][j] = true;
+                }
+            }
+
+            if(j == m - 1) {
+                if(grid[i][j] == 'R') {
+                    q.push({i, j});
+                    escape[i][j] = true;
+                }
+            }
+        }
+    }
+
+    while(!q.empty()) {
+        auto [i, j] = q.front();
+        q.pop();
+
+        for(int d = 0; d < 4; d++) {
+            int ni = i + dr[d];
+            int nj = j + dc[d];
+            
+            int ti = ni, tj = nj;
+            if(is_valid(ni, nj) && !escape[ni][nj]) {
+                if(grid[ni][nj] == 'U') ti--;
+                else if(grid[ni][nj] == 'D') ti++;
+                else if(grid[ni][nj] == 'L') tj--;
+                else if(grid[ni][nj] == 'R') tj++;
+            }
+
+            if(ti == i && tj == j) {
+                q.push({ni, nj});
+                escape[ni][nj] = true;
+            }
+        }
+    }
+    
+    int ans = 0;
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < m; j++) {
+            if(escape[i][j]) ans++;
+        }
+    }
+
+    cout << ans << '\n';  
 }
 
 int main() {
