@@ -22,8 +22,9 @@ ll atmost(int x) {
     int l = 1;
     int distinct = 0;
     ll ans = 0;
-    // Fixing the right pointer r and 
-    // seeing how many subarrays are ending at r
+    // Actually fixing l and seeing how far can we go
+    // then all are valid from l to r
+    // all ends at r
     for(int r = 1; r <= n; r++) {
         if(mp.find(a[r]) == mp.end()) {
             distinct++;
