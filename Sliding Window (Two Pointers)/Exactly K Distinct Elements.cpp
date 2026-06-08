@@ -25,6 +25,10 @@ ll atmost(int x) {
     // Actually fixing l and seeing how far can we go
     // then all are valid from l to r
     // all ends at r
+    
+    // (It's like the same thing that would do with n^2, where
+    // we fixed l and saw how many r is possible from there)
+    // but here we are seeing how many l are possible for a r(ending at r)
     for(int r = 1; r <= n; r++) {
         if(mp.find(a[r]) == mp.end()) {
             distinct++;
