@@ -35,7 +35,7 @@ ll atmost(int x) {
             mp[a[l]]--;
             if(mp[a[l]] == 0) {
                 distinct--;
-                mp.erase(mp[a[l]]);
+                mp.erase(a[l]);
             }
             l++;
         }
