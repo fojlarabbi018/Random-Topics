@@ -14,3 +14,11 @@ void solve() {
         a[i] = lower_bound(com.begin(), com.end(), a[i]) - com.begin() + 1;
     }
 }
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    
+    solve();
+    return 0;
+}
