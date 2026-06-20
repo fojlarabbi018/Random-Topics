@@ -6,27 +6,53 @@ const int N = 2e5 + 5;
 ll seg[4 * N];
 
 // Remember, here the seg tree is built from freq array
-void update(int idx, int l, int r, int pos, int val) {
-    if(l == r) {
-        seg[idx] += val;
-        return;
+struct Node {
+    ll sum;
+};
+
+struct SegTree {
+    Node seg[4 * N];
+
+    SegTree() {
+        memset(seg, 0, sizeof(seg));
     }
 
-    int mid = (l + r) / 2;
-    if(pos <= mid) update(2 * idx, l, mid, pos, val);
-    else update(2 * idx + 1, mid + 1, r, pos, val);
+    Node merge(Node left, Node right) {
+        Node res;
+        res.sum = left.sum + right.sum;
+        return res;
+    }
 
-    seg[idx] = seg[2 * idx] + seg[2 * idx + 1];
-}
+    void update(int idx, int l, int r, int pos, ll val) {
+        if(l == r) {
+            seg[idx].sum += val;
+            return;
+        }
 
-int query(int idx, int l, int r, int ql, int qr) {
-    if(r < ql || l > qr) return 0;
-    if(l >= ql && r <= qr) return seg[idx];
+        int mid = (l + r) / 2;
 
-    int mid = (l + r) / 2;
-    return query(2 * idx, l, mid, ql, qr) +
-           query(2 * idx + 1, mid + 1, r, ql, qr);
-}
+        if(pos <= mid) update(2 * idx, l, mid, pos, val);
+        else update(2 * idx + 1, mid + 1, r, pos, val);
+
+        seg[idx] = merge(seg[2 * idx], seg[2 * idx + 1]);
+    }
+
+    Node query(int idx, int l, int r, int ql, int qr) {
+        if(r < ql || l > qr) {
+            return {0};
+        }
+        if(l >= ql && r <= qr) {
+            return seg[idx];
+        }
+
+        int mid = (l + r) / 2;
+
+        return merge(
+            query(2 * idx, l, mid, ql, qr),
+            query(2 * idx + 1, mid + 1, r, ql, qr)
+        );
+    }
+}st; // Global declaration is a must
 
 void solve() {
     int n;
@@ -47,8 +73,8 @@ void solve() {
     int m = com.size();
     ll inv_cnt = 0;
     for(int i = n - 1; i >= 0; i--) {
-        inv_cnt += query(1, 1, m, 1, a[i] - 1);
-        update(1, 1, m, a[i], 1);
+        inv_cnt += st.query(1, 1, m, 1, a[i] - 1).sum;
+        st.update(1, 1, m, a[i], 1);
     }
 
     cout << inv_cnt << '\n';
