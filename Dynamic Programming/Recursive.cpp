@@ -11,19 +11,20 @@ int dp[N][100005];
 
 // This is the most intuitive way to use recursive dp
 // Direct calling the final ans which depends on the prev ans
-int f(int i, int rem_sum) {
-    if(i == 0) return rem_sum == 0;
-    if(dp[i][rem_sum] != -1) {
-        return dp[i][rem_sum];
+// f(i, rem) = how many ways we can distribute rem candies among 1 to i
+int f(int i, int rem) {
+    if(i == 0) return rem == 0;
+    if(dp[i][rem] != -1) {
+        return dp[i][rem];
     }
 
     ll ans = 0;
     for(int j = 0; j <= a[i]; j++) {
-        ans += f(i - 1, rem_sum - j);
+        ans += f(i - 1, rem - j);
         ans %= m;
     }
 
-    return dp[i][rem_sum] = ans;
+    return dp[i][rem] = ans;
 }
 
 void solve() {
@@ -31,7 +32,7 @@ void solve() {
     for(int i = 1; i <= n; i++) {
         cin >> a[i];
     }
-    
+
     memset(dp, -1, sizeof(dp));
     cout << f(n, k) << '\n';
 }
