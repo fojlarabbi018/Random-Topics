@@ -52,95 +52,79 @@ void yoyo {
 ////<======= Segment Tree =======>
 
 const int N = 2e5 + 5;
+ll a[N];
+
 struct Node {
     int gcd, mn, cnt;
 };
 
-ll a[N];
-Node seg[4 * N];
+struct SegTree {
+    Node seg[4 * N];
+    memset(seg, 0, sizeof(seg));
 
-Node merge(Node left, Node right) {
-    Node res;
-    res.gcd = __gcd(left.gcd, right.gcd);
-    res.mn = min(left.mn, right.mn);
+    Node merge(Node left, Node right) {
+        Node res;
 
-    if(left.mn == right.mn) {
-        res.cnt = left.cnt + right.cnt;
-    }
-    else if(left.mn < right.mn) {
-        res.cnt = left.cnt;
-    }
-    else res.cnt = right.cnt;
+        res.gcd = __gcd(left.gcd, right.gcd);
+        res.mn = min(left.mn, right.mn);
 
-    return res;
-}
-
-void build(int idx, int l, int r) {
-    if(l == r) {
-        seg[idx].gcd = a[l];
-        seg[idx].mn = a[l];
-        seg[idx].cnt = 1;
-        return;
-    }
-
-    int mid = (l + r) / 2;
-    build(2 * idx, l, mid);
-    build(2 * idx + 1, mid + 1, r);
-
-    seg[idx] = merge(seg[2 * idx], seg[2 * idx + 1]);
-}
-
-void update(int idx, int l, int r, int pos, int val) {
-    if(l == r) {
-        seg[idx].gcd = val;
-        seg[idx].mn = val;
-        seg[idx].cnt = 1;
-        return;
-    }
-
-    int mid = (l + r) / 2;
-    if(pos <= mid) update(2 * idx, l, mid, pos, val);
-    else  update(2 * idx + 1, mid + 1, r, pos, val);
-
-    seg[idx] = merge(seg[2 * idx], seg[2 * idx + 1]);
-} 
-
-Node query(int idx, int l, int r, int ql, int qr) {
-    if(r < ql || l > qr) return {0, INT_MAX, 0};
-    if(l >= ql && r <= qr) return seg[idx];
-
-    int mid = (l + r) / 2;
-   
-    return merge(query(2 * idx, l, mid, ql, qr),
-           query(2 * idx + 1, mid + 1, r, ql, qr));
-}
-
-void solve() {
-    int n, q;
-    cin >> n >> q;
-    for(int i = 1; i <= n; i++) cin >> a[i];
-
-    build(1, 1, n);
-
-    while(q--) {
-        int type;
-        cin >> type;
-        if(type == 1) {
-            int pos, val;
-            cin >> pos >> val;
-            pos++;
-          
-            update(1, 1, n, pos, val);
-        } 
-        else {
-            int l, r;
-            cin >> l >> r;
-            l++; r++;
-            Node ans = query(1, 1, n, l, r - 1);
-            cout << ans.gcd << " " << ans.mn << " " << ans.cnt << '\n';
+        if(left.mn == right.mn) {
+            res.cnt = left.cnt + right.cnt;
         }
+        else if(left.mn < right.mn) {
+            res.cnt = left.cnt;
+        }
+        else {
+            res.cnt = right.cnt;
+        }
+
+        return res;
     }
-}
+
+    void build(int idx, int l, int r, ll a[]) {
+        if(l == r) {
+            seg[idx] = {a[l], a[l], 1};
+            return;
+        }
+
+        int mid = (l + r) / 2;
+
+        build(2 * idx, l, mid, a);
+        build(2 * idx + 1, mid + 1, r, a);
+
+        seg[idx] = merge(seg[2 * idx], seg[2 * idx + 1]);
+    }
+
+    void update(int idx, int l, int r, int pos, int val) {
+        if(l == r) {
+            seg[idx] = {val, val, 1};
+            return;
+        }
+
+        int mid = (l + r) / 2;
+
+        if(pos <= mid) update(2 * idx, l, mid, pos, val);
+        else update(2 * idx + 1, mid + 1, r, pos, val);
+
+        seg[idx] = merge(seg[2 * idx], seg[2 * idx + 1]);
+    }
+
+    Node query(int idx, int l, int r, int ql, int qr) {
+        if(r < ql || l > qr) {
+            return {0, INT_MAX, 0};
+        }
+        if(ql <= l && r <= qr) {
+            return seg[idx];
+        }
+
+        int mid = (l + r) / 2;
+
+        return merge(
+            query(2 * idx, l, mid, ql, qr),
+            query(2 * idx + 1, mid + 1, r, ql, qr)
+        );
+    }
+};
 
 //// <======= Lazy =======>
 
@@ -515,8 +499,7 @@ void solve() {
 
 // escape the maze
 int n, m;
-int dr[4] = {-1, 1, 0, 0};
-int dc[4] = {0, 0, -1, 1};
+vector<pair<int, int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
 bool is_valid(int i, int j) {
     return i >= 0 && i < n && j >= 0 && j < m;
@@ -571,8 +554,8 @@ void solve() {
         q.pop();
 
         for(int d = 0; d < 4; d++) {
-            int ni = i + dr[d];
-            int nj = j + dc[d];
+            int ni = i + directions[d].first;
+            int nj = j + directions[d].second;
             
             int ti = ni, tj = nj;
             if(is_valid(ni, nj) && !escape[ni][nj]) {
