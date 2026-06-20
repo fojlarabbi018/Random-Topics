@@ -77,7 +77,7 @@ struct SegTree {
             query(2 * idx + 1, mid + 1, r, ql, qr)
         );
     }
-};
+}st; // Global declaration is a must
 
 
 void solve() {
@@ -87,7 +87,6 @@ void solve() {
         cin >> a[i];
     }
     
-    SegTree st;
     st.build(1, 1, n);
 
     while(q--) {
