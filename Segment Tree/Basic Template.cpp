@@ -80,6 +80,7 @@ struct SegTree {
     }
 }st; // Global declaration is a must
 // Otherwise stack overflow will occur for large array inside the SegTree
+// Always use Node rather than just int or ll(Node with one member = same as int, ll)
 
 int main() {
     ios_base::sync_with_stdio(false);
