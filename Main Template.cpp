@@ -52,7 +52,7 @@ void yoyo {
 ////<======= Segment Tree =======>
 
 const int N = 2e5 + 5;
-ll a[N];
+int a[N];
 
 struct Node {
     int gcd, mn, cnt;
@@ -60,7 +60,10 @@ struct Node {
 
 struct SegTree {
     Node seg[4 * N];
-    memset(seg, 0, sizeof(seg));
+
+    SegTree() {
+        memset(seg, 0, sizeof(seg));
+    }
 
     Node merge(Node left, Node right) {
         Node res;
@@ -81,7 +84,7 @@ struct SegTree {
         return res;
     }
 
-    void build(int idx, int l, int r, ll a[]) {
+    void build(int idx, int l, int r) {
         if(l == r) {
             seg[idx] = {a[l], a[l], 1};
             return;
@@ -89,8 +92,8 @@ struct SegTree {
 
         int mid = (l + r) / 2;
 
-        build(2 * idx, l, mid, a);
-        build(2 * idx + 1, mid + 1, r, a);
+        build(2 * idx, l, mid);
+        build(2 * idx + 1, mid + 1, r);
 
         seg[idx] = merge(seg[2 * idx], seg[2 * idx + 1]);
     }
