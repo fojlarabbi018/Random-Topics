@@ -116,7 +116,7 @@ struct SegTree {
         if(r < ql || l > qr) {
             return {0, INT_MAX, 0};
         }
-        if(ql <= l && r <= qr) {
+        if(l >= ql && r <= qr) {
             return seg[idx];
         }
 
