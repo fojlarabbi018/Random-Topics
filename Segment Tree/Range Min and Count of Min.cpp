@@ -3,72 +3,92 @@ using namespace std;
 #define ll long long
 
 const int N = 2e5 + 5;
+int a[N];
+
 struct Node {
     int mn, cnt;
 };
 
-ll a[N];
-Node seg[4 * N];
+struct SegTree {
+    Node seg[4 * N];
 
-Node merge(Node left, Node right) {
-    Node res;
-    res.mn = min(left.mn, right.mn);
-
-    if(left.mn == right.mn) {
-        res.cnt = left.cnt + right.cnt;
-    }
-    else if(left.mn < right.mn) {
-        res.cnt = left.cnt;
-    }
-    else res.cnt = right.cnt;
-
-    return res;
-}
-
-void build(int idx, int l, int r) {
-    if(l == r) {
-        seg[idx].mn = a[l];
-        seg[idx].cnt = 1;
-        return;
+    SegTree() {
+        memset(seg, 0, sizeof(seg));
     }
 
-    int mid = (l + r) / 2;
-    build(2 * idx, l, mid);
-    build(2 * idx + 1, mid + 1, r);
+    Node merge(Node left, Node right) {
+        Node res;
 
-    seg[idx] = merge(seg[2 * idx], seg[2 * idx + 1]);
-}
+        res.mn = min(left.mn, right.mn);
 
-void update(int idx, int l, int r, int pos, int val) {
-    if(l == r) {
-        seg[idx].mn = val;
-        seg[idx].cnt = 1;
-        return;
+        if(left.mn == right.mn) {
+            res.cnt = left.cnt + right.cnt;
+        }
+        else if(left.mn < right.mn) {
+            res.cnt = left.cnt;
+        }
+        else {
+            res.cnt = right.cnt;
+        }
+
+        return res;
     }
 
-    int mid = (l + r) / 2;
-    if(pos <= mid) update(2 * idx, l, mid, pos, val);
-    else  update(2 * idx + 1, mid + 1, r, pos, val);
+    void build(int idx, int l, int r) {
+        if(l == r) {
+            seg[idx] = {a[l], 1};
+            return;
+        }
 
-    seg[idx] = merge(seg[2 * idx], seg[2 * idx + 1]);
-} 
+        int mid = (l + r) / 2;
 
-Node query(int idx, int l, int r, int ql, int qr) {
-    if(r < ql || l > qr) return {INT_MAX, 0};
-    if(l >= ql && r <= qr) return seg[idx];
+        build(2 * idx, l, mid);
+        build(2 * idx + 1, mid + 1, r);
 
-    int mid = (l + r) / 2;
-   
-    return merge(query(2 * idx, l, mid, ql, qr),
-           query(2 * idx + 1, mid + 1, r, ql, qr));
-}
+        seg[idx] = merge(seg[2 * idx], seg[2 * idx + 1]);
+    }
+
+    void update(int idx, int l, int r, int pos, int val) {
+        if(l == r) {
+            seg[idx] = {val, 1};
+            return;
+        }
+
+        int mid = (l + r) / 2;
+
+        if(pos <= mid) update(2 * idx, l, mid, pos, val);
+        else update(2 * idx + 1, mid + 1, r, pos, val);
+
+        seg[idx] = merge(seg[2 * idx], seg[2 * idx + 1]);
+    }
+
+    Node query(int idx, int l, int r, int ql, int qr) {
+        if(r < ql || l > qr) {
+            return {INT_MAX, 0};
+        }
+        if(ql <= l && r <= qr) {
+            return seg[idx];
+        }
+
+        int mid = (l + r) / 2;
+
+        return merge(
+            query(2 * idx, l, mid, ql, qr),
+            query(2 * idx + 1, mid + 1, r, ql, qr)
+        );
+    }
+};
+
 
 void solve() {
     int n, q;
     cin >> n >> q;
-    for(int i = 1; i <= n; i++) cin >> a[i];
-
-    build(1, 1, n);
+    for(int i = 1; i <= n; i++) {
+        cin >> a[i];
+    }
+    
+    SegTree st;
+    st.build(1, 1, n);
 
     while(q--) {
         int type;
@@ -78,13 +98,13 @@ void solve() {
             cin >> pos >> val;
             pos++;
           
-            update(1, 1, n, pos, val);
+            st.update(1, 1, n, pos, val);
         } 
         else {
             int l, r;
             cin >> l >> r;
             l++; r++;
-            Node ans = query(1, 1, n, l, r);
+            Node ans = st.query(1, 1, n, l, r);
             cout << ans.mn << " " << ans.cnt << '\n';
         }
     }
