@@ -43,6 +43,7 @@ void solve() {
     // and as the sum grows the memoization does the rest
 
     // In short, there are exactly N * MX unique states
+    // and each of them will be called only once
 
     for(int sum = 1; sum < 100005; sum++) {
         if(f(n, sum)) ans.push_back(sum);
