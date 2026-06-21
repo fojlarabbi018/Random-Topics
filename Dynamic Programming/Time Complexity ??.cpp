@@ -10,6 +10,7 @@ bool vis[N][100005];
 bool dp[N][100005];
 
 // A pure brute force version
+// f = is it possible to make a sum = sum by using elements from 1 to i ?
 bool f(int i, int sum) {
     if(i == 0) {
         return sum == 0;
