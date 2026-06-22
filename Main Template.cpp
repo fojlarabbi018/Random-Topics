@@ -299,7 +299,9 @@ int binpow(ll a, ll n, int m) {
 // m must be Prime and cannot divide a 
 // If any fact is divisible by m, then WA
 // N = 1e6 + 5 is safer as m = 1e9 + 7 (fact % m won't be 0)
-int inverse(int a, int m) {
+
+// Will give the modular inverse(a^-1 % m) of "a modulo m"
+int mod_inverse(int a, int m) {
     return binpow(a, m - 2, m);
 }
 
@@ -310,9 +312,9 @@ void pre_fact() {
         fact[i] = 1LL * fact[i - 1] * i % m;
     }
     // for(int i = 0; i < N; i++) { // O(N * log N)
-    //     invfact[i] = inverse(fact[i], m);
+    //     invfact[i] = mod_inverse(fact[i], m);
     // }
-    invfact[N - 1] = inverse(fact[N - 1], m) % m;
+    invfact[N - 1] = mod_inverse(fact[N - 1], m) % m;
     for(int i = N - 2; i >= 0; i--) {
         invfact[i] = 1LL * invfact[i + 1] * (i + 1) % m;
     }
