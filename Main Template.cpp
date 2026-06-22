@@ -294,8 +294,6 @@ int binpow(ll a, ll n, int m) {
 }
 
 
-////<======= Combinatorics =======>
-
 // m must be Prime and cannot divide a 
 // If any fact is divisible by m, then WA
 // N = 1e6 + 5 is safer as m = 1e9 + 7 (fact % m won't be 0)
@@ -304,6 +302,38 @@ int binpow(ll a, ll n, int m) {
 int mod_inverse(int a, int m) {
     return binpow(a, m - 2, m);
 }
+
+
+// <=========== Extended Euclidean Algorithm ============>
+
+// m can be any number (need not to be prime)
+ll extended_gcd(ll a, ll b, ll &x, ll &y) {
+    if(b == 0) {
+        x = 1;
+        y = 0;
+        return a;
+    }
+
+    ll x1, y1;
+    ll g = extended_gcd(b, a % b, x1, y1);
+
+    x = y1;
+    y = x1 - (a / b) * y1;
+
+    return g;
+}
+
+ll mod_inverse(ll a, ll m) {
+    ll x, y;
+    ll g = extended_gcd(a, m, x, y);
+
+    if(g != 1) return -1; // inverse doesn't exist
+
+    return (x % m + m) % m;
+}
+
+////<======= Combinatorics =======>
+
 
 int fact[N], invfact[N];
 void pre_fact() {
