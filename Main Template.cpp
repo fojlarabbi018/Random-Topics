@@ -306,7 +306,7 @@ int mod_inverse(int a, int m) {
 
 // <=========== Extended Euclidean Algorithm ============>
 
-// m can be any number (need not to be prime)
+// m can be any number (need not to be a prime)
 ll extended_gcd(ll a, ll b, ll &x, ll &y) {
     if(b == 0) {
         x = 1;
