@@ -2,6 +2,7 @@
 using namespace std;
 #define ll long long
 
+const int N = 1e6 + 5, m = 1e9 + 7;
 int binpow(ll a, ll n, int m) {
     a = a % m;   
     ll res = 1 % m;
@@ -12,7 +13,7 @@ int binpow(ll a, ll n, int m) {
         a = a * a % m;
         n >>= 1;
     }
-    return res;  
+    return res;
 }
 
 int main() {
