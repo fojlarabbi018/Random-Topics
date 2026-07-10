@@ -49,6 +49,17 @@ void yoyo {
 }
 
 
+// <========= Custom Comparator ==========>
+
+// Sorting with custom comparator(on the basis of second)
+// Ascending order
+sort(vp.begin(), vp.end(), [](pair<int, int> a, pair<int, int> b) {
+    return a.second < b.second;
+    // true --> keeps them as they are
+    // false --> makes change 
+});
+
+
 ////<======= Segment Tree =======>
 
 const int N = 2e5 + 5;
@@ -622,7 +633,7 @@ int main() {
     cin.tie(NULL);
 
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while(t--) {
         solve();
     }
