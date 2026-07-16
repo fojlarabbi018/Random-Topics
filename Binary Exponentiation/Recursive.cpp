@@ -2,15 +2,18 @@
 using namespace std;
 #define ll long long
 
-int binpow(int a, ll n, int m) { // O(log n)
-    if(n == 0) return 1 % m;
-    ll cur = binpow(a, n/2, m);
-    if(n % 2 == 0) {
-        return cur * cur % m;
+const int N = 1e6 + 5, m = 1e9 + 7;
+ll binpow(ll a, ll b, int m) {
+    a = a % m;   
+    ll res = 1 % m;
+    while(b > 0) {
+        if(n & 1) {
+            res = res * a % m;
+        }
+        a = a * a % m;
+        b >>= 1;
     }
-    else {
-        return cur * cur % m * a % m;
-    }
+    return res;
 }
 
 int main() {
