@@ -69,3 +69,25 @@ public:
         return ans;
     }
 };
+
+Trie trie;
+unordered_map<int, int> freq;
+
+void add(int x) {
+    trie.insert(x);
+    freq[x]++;
+}
+
+void remove_one(int x) {
+    if(freq[x] == 0) return;
+
+    trie.erase(x);
+    freq[x]--;
+}
+
+void remove_all(int x) {
+    while(freq[x] > 0) {
+        trie.erase(x);
+        freq[x]--;
+    }
+}
