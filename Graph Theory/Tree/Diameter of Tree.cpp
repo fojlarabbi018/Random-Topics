@@ -30,23 +30,28 @@ void solve() {
     // When a dfs is applied from any node, then the farthest node
     // will always be an endpoint of the diameter
     dfs(1, -1);
-    int node = 1, mx = INT_MIN;
+    int node1 = 1, mx = INT_MIN;
     for(int i = 1; i <= n; i++) {
         if(depth[i] > mx) {
             mx = depth[i];
-            node = i;
+            node1 = i;
         }
     }
     
     // 2nd DFS
     memset(depth, 0, sizeof(depth));
-    dfs(node, -1);
+    dfs(node1, -1);
 
     mx = INT_MIN;
+    int node2 = 1;
     for(int i = 1; i <= n; i++) {
-        mx = max(mx, depth[i]);
+        if(depth[i] > mx) {
+            mx = depth[i];
+            node2 = i;
+        }
     }
     cout << mx << " ";
+    // node1 and node2 are the two endpoints of the diameter
 }
 
 int main() {
